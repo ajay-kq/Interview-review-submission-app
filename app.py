@@ -59,13 +59,13 @@ REPORTS_DIR = BASE_DIR / "reports"
 REPORTS_DIR.mkdir(exist_ok=True)
 
 # Database Connection
-MONGODB_URI = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/interview_db")
+MONGODB_URI = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/interview_submission_db")
 mongo_client = MongoClient(MONGODB_URI)
 
 try:
     db = mongo_client.get_default_database()
 except Exception:
-    db = mongo_client["interview_db"]
+    db = mongo_client["interview_submission_db"]
 
 def init_db():
     if db.users.count_documents({"username": "admin"}) == 0:
