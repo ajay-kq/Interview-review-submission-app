@@ -147,20 +147,24 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarOverlay.addEventListener('click', toggleSidebar);
   }
 
-  // Danger Zone Toggle
-  const toggleDangerZoneBtn = document.getElementById('toggleDangerZoneBtn');
-  const dangerZoneContent = document.getElementById('dangerZoneContent');
+  // Password Visibility Toggle
+  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+  const passwordInput = document.getElementById('admin_password');
+  const eyeIconOpen = document.getElementById('eyeIconOpen');
+  const eyeIconClose = document.getElementById('eyeIconClose');
 
-  if (toggleDangerZoneBtn && dangerZoneContent) {
-    toggleDangerZoneBtn.addEventListener('click', () => {
-      const isHidden = dangerZoneContent.classList.toggle('active');
-      toggleDangerZoneBtn.textContent = isHidden ? 'Hide Danger Zone' : 'Unlock Danger Zone';
-      
-      if (isHidden) {
-          toggleDangerZoneBtn.classList.replace('btn-outline', 'btn-danger');
-      } else {
-          toggleDangerZoneBtn.classList.replace('btn-danger', 'btn-outline');
-      }
-    });
+  if (togglePasswordBtn && passwordInput && eyeIconOpen && eyeIconClose) {
+      togglePasswordBtn.addEventListener('click', () => {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          
+          if (type === 'text') {
+              eyeIconOpen.style.display = 'none';
+              eyeIconClose.style.display = 'block';
+          } else {
+              eyeIconOpen.style.display = 'block';
+              eyeIconClose.style.display = 'none';
+          }
+      });
   }
 });

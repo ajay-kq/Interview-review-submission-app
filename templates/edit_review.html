@@ -117,6 +117,8 @@
           <select id="recommendation" name="recommendation" class="text-input custom-select" required>
             <option value="Selected" {% if review['recommendation'] == 'Selected' %}selected{% endif %}>Selected</option>
             <option value="Hold" {% if review['recommendation'] == 'Hold' %}selected{% endif %}>Hold</option>
+            <option value="Consider with Training" {% if review['recommendation'] == 'Consider with Training' %}selected{% endif %}>Consider with Training</option>
+            <option value="Skip" {% if review['recommendation'] == 'Skip' %}selected{% endif %}>Skip</option>
             <option value="Not Recommended" {% if review['recommendation'] == 'Not Recommended' %}selected{% endif %}>Not Recommended</option>
           </select>
         </div>
