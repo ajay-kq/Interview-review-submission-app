@@ -99,6 +99,7 @@ def init_db():
         "smtp_username": "",
         "smtp_password": "",
         "email_from": "",
+        "email_from_name": "",
         "email_to_default": "",
         "email_cc_default": "",
         "email_bcc_default": "",
@@ -260,6 +261,7 @@ def configurations():
         set_config("smtp_username", request.form.get("smtp_username", "").strip())
         set_config("smtp_password", request.form.get("smtp_password", "").strip())
         set_config("email_from", request.form.get("email_from", "").strip())
+        set_config("email_from_name", request.form.get("email_from_name", "").strip())
         set_config("email_to_default", request.form.get("email_to_default", "").strip())
         set_config("email_cc_default", request.form.get("email_cc_default", "").strip())
         set_config("email_bcc_default", request.form.get("email_bcc_default", "").strip())
@@ -425,6 +427,11 @@ def send_email_manual(review_id):
     smtp_username = get_config("smtp_username", "")
     smtp_password = get_config("smtp_password", "")
     email_from = get_config("email_from", "")
+    email_from_name = get_config("email_from_name", "")
+    
+    # Construct "From" field with alias if provided
+    full_from = f"{email_from_name} <{email_from}>" if email_from_name else email_from
+
     email_to = get_config("email_to_default", "")
     email_cc = get_config("email_cc_default", "")
     email_bcc = get_config("email_bcc_default", "")
@@ -453,7 +460,7 @@ def send_email_manual(review_id):
         smtp_port=smtp_port,
         smtp_username=smtp_username,
         smtp_password=smtp_password,
-        email_from=email_from,
+        email_from=full_from,
         email_to=email_to,
         email_cc=email_cc,
         email_bcc=email_bcc,
@@ -495,27 +502,6 @@ def download_pdf(review_id):
     build_pdf_report(review, review.get("ratings", []), pdf_path)
 
     return send_file(pdf_path, as_attachment=True)
-
-@app.route("/ai_suggest", methods=["POST"])
-@login_required
-def ai_suggest():
-    payload = request.get_json(silent=True) or {}
-    field_name = payload.get("field_name", "")
-    candidate_name = payload.get("candidate_name", "").strip()
-    position = payload.get("position", "").strip()
-
-    if field_name == "profile_summary":
-        text = f"{candidate_name or 'The candidate'} has relevant background for the {position or 'applied'} role and demonstrated a basic to moderate level of understanding during the interview."
-    elif field_name == "technical_evaluation":
-        text = f"{candidate_name or 'The candidate'} showed practical awareness of infrastructure concepts, responded reasonably to technical questions, and demonstrated workable troubleshooting thought process."
-    elif field_name == "observations":
-        text = "Candidate was attentive, cooperative, and communicated clearly. Some answers were strong in fundamentals, while a few areas may require additional hands-on validation."
-    elif field_name == "overall_assessment":
-        text = f"Overall, {candidate_name or 'the candidate'} appears suitable for further consideration based on this round, depending on team expectations and role requirements."
-    else:
-        text = "AI suggestion not available for this field."
-
-    return jsonify({"suggestion": text})
 
 if __name__ == "__main__":
     init_db()
