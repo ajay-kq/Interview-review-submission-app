@@ -167,4 +167,21 @@ document.addEventListener('DOMContentLoaded', () => {
           }
       });
   }
+
+  // Danger Zone Toggle
+  const toggleDangerZoneBtn = document.getElementById('toggleDangerZoneBtn');
+  const dangerZoneContent = document.getElementById('dangerZoneContent');
+
+  if (toggleDangerZoneBtn && dangerZoneContent) {
+    toggleDangerZoneBtn.addEventListener('click', () => {
+      const isHidden = dangerZoneContent.classList.toggle('active');
+      toggleDangerZoneBtn.textContent = isHidden ? 'Hide Danger Zone' : 'Unlock Danger Zone';
+      
+      if (isHidden) {
+          toggleDangerZoneBtn.classList.replace('btn-outline', 'btn-danger');
+      } else {
+          toggleDangerZoneBtn.classList.replace('btn-danger', 'btn-outline');
+      }
+    });
+  }
 });
