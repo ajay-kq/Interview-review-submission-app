@@ -97,6 +97,80 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
+  // Theme Switcher Logic
+  const themeSwitcher = document.getElementById('themeSwitcher');
+  if (themeSwitcher) {
+    const savedTheme = localStorage.getItem('app-theme') || 'dark';
+    themeSwitcher.value = savedTheme;
+    
+    themeSwitcher.addEventListener('change', (e) => {
+      const newTheme = e.target.value;
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('app-theme', newTheme);
+    });
+  }
+
+  // Reset DB Modal Logic
+  const sidebarResetDbBtn = document.getElementById('sidebarResetDbBtn');
+  const resetModal = document.getElementById('resetModal');
+  const closeResetModal = document.getElementById('closeResetModal');
+  const cancelReset = document.getElementById('cancelReset');
+  const adminPasswordModal = document.getElementById('admin_password_modal');
+
+  if (sidebarResetDbBtn && resetModal) {
+    sidebarResetDbBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetModal.style.display = 'flex';
+      adminPasswordModal.focus();
+    });
+
+    const hideModal = () => {
+      resetModal.style.display = 'none';
+      adminPasswordModal.value = '';
+    };
+
+    closeResetModal?.addEventListener('click', hideModal);
+    cancelReset?.addEventListener('click', hideModal);
+
+    window.addEventListener('click', (e) => {
+      if (e.target === resetModal) hideModal();
+    });
+  }
+
+  // Modal Password Toggle
+  const togglePasswordModalBtn = document.getElementById('togglePasswordModalBtn');
+  const eyeOpenModal = document.getElementById('eyeOpenModal');
+  const eyeCloseModal = document.getElementById('eyeCloseModal');
+
+  if (togglePasswordModalBtn && adminPasswordModal) {
+    togglePasswordModalBtn.addEventListener('click', () => {
+      const type = adminPasswordModal.getAttribute('type') === 'password' ? 'text' : 'password';
+      adminPasswordModal.setAttribute('type', type);
+      
+      if (type === 'text') {
+        eyeOpenModal.style.display = 'none';
+        eyeCloseModal.style.display = 'block';
+      } else {
+        eyeOpenModal.style.display = 'block';
+        eyeCloseModal.style.display = 'none';
+      }
+    });
+  }
+
+  // Mobile Sidebar Toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebar = document.getElementById('appSidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+  if (mobileMenuBtn && sidebar && sidebarOverlay) {
+    function toggleSidebar() {
+      sidebar.classList.toggle('mobile-hidden');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+  }
 });
 
 // Global Toggle for Skill ratings visibility
@@ -130,58 +204,3 @@ function toggleRating(skillKey) {
       });
   }
 }
-
-// Mobile Sidebar Toggle
-document.addEventListener('DOMContentLoaded', () => {
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const sidebar = document.getElementById('appSidebar');
-  const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-  if (mobileMenuBtn && sidebar && sidebarOverlay) {
-    function toggleSidebar() {
-      sidebar.classList.toggle('mobile-hidden');
-      sidebarOverlay.classList.toggle('active');
-    }
-
-    mobileMenuBtn.addEventListener('click', toggleSidebar);
-    sidebarOverlay.addEventListener('click', toggleSidebar);
-  }
-
-  // Password Visibility Toggle
-  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-  const passwordInput = document.getElementById('admin_password');
-  const eyeIconOpen = document.getElementById('eyeIconOpen');
-  const eyeIconClose = document.getElementById('eyeIconClose');
-
-  if (togglePasswordBtn && passwordInput && eyeIconOpen && eyeIconClose) {
-      togglePasswordBtn.addEventListener('click', () => {
-          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-          passwordInput.setAttribute('type', type);
-          
-          if (type === 'text') {
-              eyeIconOpen.style.display = 'none';
-              eyeIconClose.style.display = 'block';
-          } else {
-              eyeIconOpen.style.display = 'block';
-              eyeIconClose.style.display = 'none';
-          }
-      });
-  }
-
-  // Danger Zone Toggle
-  const toggleDangerZoneBtn = document.getElementById('toggleDangerZoneBtn');
-  const dangerZoneContent = document.getElementById('dangerZoneContent');
-
-  if (toggleDangerZoneBtn && dangerZoneContent) {
-    toggleDangerZoneBtn.addEventListener('click', () => {
-      const isHidden = dangerZoneContent.classList.toggle('active');
-      toggleDangerZoneBtn.textContent = isHidden ? 'Hide Danger Zone' : 'Unlock Danger Zone';
-      
-      if (isHidden) {
-          toggleDangerZoneBtn.classList.replace('btn-outline', 'btn-danger');
-      } else {
-          toggleDangerZoneBtn.classList.replace('btn-danger', 'btn-outline');
-      }
-    });
-  }
-});
