@@ -55,7 +55,11 @@ app.config.update(
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-REPORTS_DIR = BASE_DIR / "reports"
+# Vercel uses a read-only filesystem; use /tmp for reports
+if os.environ.get("VERCEL"):
+    REPORTS_DIR = Path("/tmp/reports")
+else:
+    REPORTS_DIR = BASE_DIR / "reports"
 REPORTS_DIR.mkdir(exist_ok=True)
 
 # Database Connection
