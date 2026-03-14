@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Email Review | Interview Review{% endblock %}
+{% block page_title %}Email Review Report{% endblock %}
+{% block page_subtitle %}Send candidate review report to the team{% endblock %}
+
+{% block content %}
+<div class="card max-w-lg">
+  <div class="candidate-brief mb-4">
+    <h4>Candidate: <strong>{{ review["candidate_name"] }}</strong></h4>
+    <p class="subtext">Interviewed on {{ review["interview_date"] }} for {{ review["position"] }}</p>
+  </div>
+
+  <form method="post" action="/send_email/{{ review['id'] }}" class="standard-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    
+    <div class="form-group">
+      <label for="subject">Email Subject</label>
+      <input type="text" id="subject" name="subject" class="text-input" value="{{ subject }}" required>
+    </div>
+
+    <div class="form-group checkbox-group my-4">
+      <label class="checkbox-label">
+        <input type="checkbox" name="attach_pdf" value="yes" checked>
+        <span class="custom-checkbox"></span>
+        Attach PDF Report
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        Send Email
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

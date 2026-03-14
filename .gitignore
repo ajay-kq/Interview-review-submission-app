@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Old SQLite Database
+database.db
+
+# Reports/Uploads folder (we might want to ignore generated PDFs)
+reports/
+*.pdf
+
+# IDEs
+.vscode/
+.idea/
+
+# Vercel
+.vercel/

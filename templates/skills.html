@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Skills | Interview Review{% endblock %}
+{% block page_title %}Technical Skills Management{% endblock %}
+{% block page_subtitle %}Add, edit, or remove technical skills for the interview evaluation form{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-5">
+    <div class="card">
+      <h3 class="card-title">Add New Skill</h3>
+      <p class="subtext mb-4">Define a new technical skill category.</p>
+      
+      <form method="post" action="{{ url_for('add_skill') }}" class="standard-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+        <div class="form-group">
+          <label for="label">Skill Name (Label) <span class="required">*</span></label>
+          <input type="text" id="label" name="label" class="text-input" placeholder="e.g. Kubernetes" required>
+        </div>
+
+        <div class="form-group">
+          <label for="key">Skill Key <span class="required">*</span></label>
+          <input type="text" id="key" name="key" class="text-input" placeholder="e.g. kubernetes" required>
+          <small class="form-text text-muted">A unique internal identifier. Lowercase, no spaces (use underscores).</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Add Skill</button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="col-md-7">
+    <div class="card">
+      <h3 class="card-title">Current Skills</h3>
+      <div class="table-responsive mt-3">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Key</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for skill in skills %}
+            <tr>
+              <td><b>{{ skill["label"] }}</b></td>
+              <td><code>{{ skill["key"] }}</code></td>
+              <td class="action-cell">
+                <form method="post" action="/skills/delete/{{ skill['id'] }}" onsubmit="return confirm('Remove this skill? It will not be available for future reviews.');" class="inline-form">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn-icon icon-delete" title="Delete">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="3" class="empty-state">No skills defined.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

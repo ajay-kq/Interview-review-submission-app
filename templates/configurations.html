@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Configurations | Interview Review{% endblock %}
+{% block page_title %}System Configurations{% endblock %}
+{% block page_subtitle %}Manage external integrations and application settings{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <form method="post" action="/configurations" class="standard-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+        <h3 class="section-title">Webhook Configuration</h3>
+        <p class="subtext mb-3">Google Chat Webhook URL for instantaneous notifications.</p>
+        
+        <div class="form-group">
+          <label for="webhook_url">Webhook URL</label>
+          <input type="url" id="webhook_url" name="webhook_url" class="text-input" value="{{ config.get('webhook_url', '') }}" placeholder="https://chat.googleapis.com/v1/spaces/...">
+        </div>
+
+        <hr class="divider">
+
+        <h3 class="section-title">Email Configuration</h3>
+        <p class="subtext mb-3">SMTP settings to send interview review reports.</p>
+        
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label for="smtp_server">SMTP Server</label>
+              <input type="text" id="smtp_server" name="smtp_server" class="text-input" value="{{ config.get('smtp_server', '') }}" placeholder="smtp.gmail.com">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="smtp_port">SMTP Port</label>
+              <input type="number" id="smtp_port" name="smtp_port" class="text-input" value="{{ config.get('smtp_port', '587') }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="smtp_username">SMTP Username</label>
+              <input type="text" id="smtp_username" name="smtp_username" class="text-input" value="{{ config.get('smtp_username', '') }}" placeholder="youremail@example.com">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="smtp_password">SMTP Password</label>
+              <input type="password" id="smtp_password" name="smtp_password" class="text-input" value="{{ config.get('smtp_password', '') }}" placeholder="App Password">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email_from">From Address</label>
+          <input type="email" id="email_from" name="email_from" class="text-input" value="{{ config.get('email_from', '') }}" placeholder="Interview Tool <youremail@example.com>">
+        </div>
+
+        <div class="form-group">
+          <label for="email_to_default">Default To</label>
+          <input type="text" id="email_to_default" name="email_to_default" class="text-input" value="{{ config.get('email_to_default', '') }}" placeholder="hr@example.com, manager@example.com">
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email_cc_default">Default CC</label>
+              <input type="text" id="email_cc_default" name="email_cc_default" class="text-input" value="{{ config.get('email_cc_default', '') }}">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email_bcc_default">Default BCC</label>
+              <input type="text" id="email_bcc_default" name="email_bcc_default" class="text-input" value="{{ config.get('email_bcc_default', '') }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email_note_reply_to">Note: Reply To</label>
+              <input type="text" id="email_note_reply_to" name="email_note_reply_to" class="text-input" value="{{ config.get('email_note_reply_to', '') }}" placeholder="team@example.com">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email_regards_name">Regards By</label>
+              <input type="text" id="email_regards_name" name="email_regards_name" class="text-input" value="{{ config.get('email_regards_name', '') }}" placeholder="IT Infrastructure Team">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions mt-4">
+          <button type="submit" class="btn btn-primary">Save Configurations</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card danger-card">
+      <h3 class="card-title text-danger">Danger Zone</h3>
+      <p class="subtext mb-3">Reset the application database entirely. This action will delete all reviews, skills, and settings. It cannot be undone.</p>
+      
+      <form method="post" action="{{ url_for('reset_database') }}" onsubmit="return confirm('Are you absolutely sure you want to reset the database? This is irreversible.');" class="standard-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+        <div class="form-group">
+          <label for="admin_password">Admin Password <span class="required">*</span></label>
+          <input type="password" id="admin_password" name="admin_password" class="text-input" placeholder="Confirm your password" required>
+        </div>
+        
+        <button type="submit" class="btn btn-danger w-100">Reset Database</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

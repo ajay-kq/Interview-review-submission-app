@@ -1,0 +1,8 @@
+flask
+requests
+reportlab
+pymongo
+python-dotenv
+flask-wtf
+flask-talisman
+werkzeug
