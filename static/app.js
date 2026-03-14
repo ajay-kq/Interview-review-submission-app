@@ -105,9 +105,8 @@ function toggleRating(skillKey) {
   const div = document.getElementById('rating_' + skillKey);
   const hiddenInput = document.getElementById(skillKey + '_rating_val');
   
-  if (cb.checked) {
+  if (cb && cb.checked) {
       div.style.display = 'flex';
-      // If no valid rating, set to 3 automatically as an educated default
       if (!hiddenInput.value || hiddenInput.value === '0') {
           const stars = div.querySelectorAll('.star');
           hiddenInput.value = '3';
@@ -121,7 +120,7 @@ function toggleRating(skillKey) {
               }
           });
       }
-  } else {
+  } else if (cb) {
       div.style.display = 'none';
       hiddenInput.value = '0';
       const stars = div.querySelectorAll('.star');
@@ -131,3 +130,37 @@ function toggleRating(skillKey) {
       });
   }
 }
+
+// Mobile Sidebar Toggle
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebar = document.getElementById('appSidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+  if (mobileMenuBtn && sidebar && sidebarOverlay) {
+    function toggleSidebar() {
+      sidebar.classList.toggle('mobile-hidden');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+  }
+
+  // Danger Zone Toggle
+  const toggleDangerZoneBtn = document.getElementById('toggleDangerZoneBtn');
+  const dangerZoneContent = document.getElementById('dangerZoneContent');
+
+  if (toggleDangerZoneBtn && dangerZoneContent) {
+    toggleDangerZoneBtn.addEventListener('click', () => {
+      const isHidden = dangerZoneContent.classList.toggle('active');
+      toggleDangerZoneBtn.textContent = isHidden ? 'Hide Danger Zone' : 'Unlock Danger Zone';
+      
+      if (isHidden) {
+          toggleDangerZoneBtn.classList.replace('btn-outline', 'btn-danger');
+      } else {
+          toggleDangerZoneBtn.classList.replace('btn-danger', 'btn-outline');
+      }
+    });
+  }
+});

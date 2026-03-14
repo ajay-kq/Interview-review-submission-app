@@ -106,16 +106,20 @@
       <h3 class="card-title text-danger">Danger Zone</h3>
       <p class="subtext mb-3">Reset the application database entirely. This action will delete all reviews, skills, and settings. It cannot be undone.</p>
       
-      <form method="post" action="{{ url_for('reset_database') }}" onsubmit="return confirm('Are you absolutely sure you want to reset the database? This is irreversible.');" class="standard-form">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        
-        <div class="form-group">
-          <label for="admin_password">Admin Password <span class="required">*</span></label>
-          <input type="password" id="admin_password" name="admin_password" class="text-input" placeholder="Confirm your password" required>
-        </div>
-        
-        <button type="submit" class="btn btn-danger w-100">Reset Database</button>
-      </form>
+      <button type="button" id="toggleDangerZoneBtn" class="btn btn-outline w-100">Unlock Danger Zone</button>
+
+      <div id="dangerZoneContent" class="danger-zone-content">
+        <form method="post" action="{{ url_for('reset_database') }}" onsubmit="return confirm('Are you absolutely sure you want to reset the database? This is irreversible.');" class="standard-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          
+          <div class="form-group">
+            <label for="admin_password">Admin Password <span class="required">*</span></label>
+            <input type="password" id="admin_password" name="admin_password" class="text-input" placeholder="Confirm your password" required>
+          </div>
+          
+          <button type="submit" class="btn btn-danger w-100">Reset Database</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
