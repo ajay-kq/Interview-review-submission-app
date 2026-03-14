@@ -6,3 +6,4 @@ python-dotenv
 flask-wtf
 flask-talisman
 werkzeug
+dnspython
