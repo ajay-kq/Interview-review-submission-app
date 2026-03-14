@@ -70,6 +70,8 @@ body {
   display: flex;
   flex-direction: column;
   position: fixed;
+  left: 0;
+  top: 0;
   height: 100vh;
   z-index: 40;
   transition: transform 0.3s ease-in-out;
@@ -148,17 +150,18 @@ body {
 .main-content {
   flex-grow: 1;
   margin-left: 0;
+  min-height: 100vh;
   padding: 1.5rem;
   max-width: 100%;
   transition: margin-left 0.3s ease-in-out;
-  width: 100vw;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
   .main-content {
     margin-left: 260px;
     padding: 2.5rem;
-    max-width: calc(100vw - 260px);
+    max-width: calc(100% - 260px);
   }
 }
 
@@ -317,13 +320,16 @@ label { display: block; font-weight: 500; font-size: 0.875rem; margin-bottom: 0.
 
 /* Form Grid */
 .row { display: flex; flex-wrap: wrap; margin: 0 -0.75rem; }
-.col-md-6, .col-md-4, .col-md-8, .col-md-5, .col-md-7 { padding: 0 0.75rem; width: 100%; }
+.justify-content-center { justify-content: center; }
+.col-md-10, .col-md-6, .col-md-4, .col-md-8, .col-md-5, .col-md-7 { padding: 0 0.75rem; width: 100%; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
 @media (min-width: 768px) {
   .col-md-6 { width: 50%; }
   .col-md-4 { width: 33.333333%; }
   .col-md-8 { width: 66.666667%; }
   .col-md-5 { width: 41.666667%; }
   .col-md-7 { width: 58.333333%; }
+  .col-md-10 { width: 83.333333%; }
 }
 
 .flex-between { display: flex; justify-content: space-between; align-items: center; }

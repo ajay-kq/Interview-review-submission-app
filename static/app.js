@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
           e.preventDefault();
           const targetId = btn.getAttribute('data-target');
           const targetElem = document.getElementById(targetId);
-          const candidateName = document.getElementById('candidate_name')?.value || '';
-          const position = document.getElementById('position')?.value || '';
+          const candidateNameElem = document.getElementById('candidate_name');
+          const candidateName = candidateNameElem ? candidateNameElem.value : '';
+          const positionElem = document.getElementById('position');
+          const position = positionElem ? positionElem.value : '';
           
           const csrfToken = document.getElementById('csrf_token') ? document.getElementById('csrf_token').value : '';
 
@@ -61,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const starContainers = document.querySelectorAll('.stars');
   starContainers.forEach(container => {
       const stars = container.querySelectorAll('.star');
-      const key = stars[0]?.getAttribute('data-key');
+      const firstStar = stars[0];
+      const key = firstStar ? firstStar.getAttribute('data-key') : null;
       const hiddenInput = document.getElementById(key + '_rating_val');
 
       stars.forEach(star => {
@@ -129,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
       adminPasswordModal.value = '';
     };
 
-    closeResetModal?.addEventListener('click', hideModal);
-    cancelReset?.addEventListener('click', hideModal);
+    if (closeResetModal) closeResetModal.addEventListener('click', hideModal);
+    if (cancelReset) cancelReset.addEventListener('click', hideModal);
 
     window.addEventListener('click', (e) => {
       if (e.target === resetModal) hideModal();
